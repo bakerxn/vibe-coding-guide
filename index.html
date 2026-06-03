@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nicole's Guide to Vibe Coding</title>
+  <meta name="description" content="A practical, personal guide to vibe coding for librarians, educators, and curious non-coders. By Nicole Baker." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================
+       TOKENS
+    ============================================ */
+    :root {
+      --bg:           #FAF7F0;
+      --bg-alt:       #F0EDE5;
+      --surface:      #FFFFFF;
+      --teal:         #1B6B6B;
+      --teal-faint:   rgba(27, 107, 107, 0.13);
+      --teal-mid:     rgba(27, 107, 107, 0.35);
+      --text:         #1A1A1A;
+      --text-muted:   #4A4A4A;
+      --text-light:   #6B6B6B;
+      --border:       #DDD9D0;
+      --border-light: #E8E4DC;
+
+      --font-heading: 'Fraunces', Georgia, serif;
+      --font-body:    'Atkinson Hyperlegible', system-ui, sans-serif;
+
+      --max-width: 760px;
+      --nav-height: 54px;
+
+      --radius:    10px;
+      --radius-lg: 16px;
+    }
+
+    /* ============================================
+       RESET & BASE
+    ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================
+       SKIP LINK
+    ============================================ */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--teal);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.875rem;
+      z-index: 9999;
+      text-decoration: none;
+      font-family: var(--font-body);
+    }
+    .skip-link:focus { top: 0.75rem; }
+
+    /* ============================================
+       NAV
+    ============================================ */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--teal);
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      box-shadow: 0 2px 12px rgba(27,107,107,0.25);
+    }
+
+    .nav-brand {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .nav-brand:focus-visible {
+      outline: 2px solid rgba(255,255,255,0.7);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.1rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 400;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+    }
+    .nav-links a:focus-visible {
+      outline: 2px solid rgba(255,255,255,0.7);
+      outline-offset: 2px;
+    }
+
+    .nav-pdf-btn {
+      margin-left: 0.75rem;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.32rem 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.15s, border-color 0.15s;
+      text-decoration: none;
+    }
+    .nav-pdf-btn:hover {
+      background: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.6);
+    }
+    .nav-pdf-btn:focus-visible {
+      outline: 2px solid rgba(255,255,255,0.7);
+      outline-offset: 2px;
+    }
+
+    .nav-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      padding: 0.35rem;
+      border-radius: 4px;
+    }
+    .nav-menu-toggle:focus-visible {
+      outline: 2px solid rgba(255,255,255,0.7);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 680px) {
+      .site-nav { padding: 0 1.25rem; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0; right: 0;
+        background: #155555;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.75rem 1.25rem 1.25rem;
+        gap: 0.15rem;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links a {
+        font-size: 0.95rem;
+        padding: 0.55rem 0.75rem;
+      }
+      .nav-pdf-btn {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+      }
+      .nav-menu-toggle { display: block; }
+      .nav-right { gap: 0; }
+    }
+
+    /* ============================================
+       SECTION BANDS
+    ============================================ */
+    .section-band {
+      width: 100%;
+      padding: 4rem 1.5rem;
+    }
+    .section-band--alt {
+      background: var(--bg-alt);
+    }
+    .section-band--dark {
+      background: var(--teal);
+    }
+
+    .section-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       HERO
+    ============================================ */
+    .hero-band {
+      width: 100%;
+      padding: 4.5rem 1.5rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--teal);
+      font-weight: 400;
+    }
+
+    .hero-intro {
+      font-size: 1.08rem;
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.8;
+      border-left: 3px solid var(--teal);
+      padding-left: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-intro strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-family: var(--font-body);
+    }
+
+    .hero-meta-sep {
+      color: var(--border);
+      user-select: none;
+    }
+
+    /* ============================================
+       SECTION TYPOGRAPHY
+    ============================================ */
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.55rem;
+    }
+
+    h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.55rem, 3.5vw, 2.1rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.015em;
+    }
+
+    h2 em {
+      font-style: italic;
+      color: var(--teal);
+      font-weight: 400;
+    }
+
+    h3 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.75;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    p strong, li strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    a:hover { color: #124e4e; }
+    a:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.88em;
+      background: var(--bg-alt);
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      color: var(--teal);
+    }
+
+    /* ============================================
+       INTRO BORDER TREATMENT
+    ============================================ */
+    .bordered-intro {
+      border-left: 3px solid var(--teal);
+      padding-left: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .bordered-intro p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    /* ============================================
+       CALLOUT
+    ============================================ */
+    .callout {
+      border-left: 3px solid var(--teal);
+      padding: 1rem 1.25rem;
+      margin: 1.75rem 0;
+      background: var(--teal-faint);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    .callout p {
+      font-size: 0.97rem;
+      color: #1A3535;
+      margin: 0;
+      font-style: italic;
+      line-height: 1.7;
+    }
+
+    .callout p strong {
+      color: #0f2828;
+    }
+
+    /* ============================================
+       TOOLKIT — WHITE CARDS ONLY HERE
+    ============================================ */
+    .toolkit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1rem;
+      margin-top: 1.75rem;
+    }
+
+    .toolkit-card {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .toolkit-card:hover {
+      box-shadow: 0 4px 16px rgba(27,107,107,0.10);
+      transform: translateY(-2px);
+    }
+
+    .toolkit-card-icon {
+      font-size: 1.4rem;
+      display: block;
+      margin-bottom: 0.6rem;
+      line-height: 1;
+    }
+
+    .toolkit-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.35rem;
+      color: var(--text);
+    }
+
+    .toolkit-card p {
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .toolkit-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      background: var(--teal-faint);
+      color: var(--teal);
+      padding: 0.15rem 0.55rem;
+      border-radius: 100px;
+      margin-bottom: 0.55rem;
+      border: 1px solid var(--teal-mid);
+    }
+
+    .toolkit-badge.optional {
+      background: transparent;
+      color: var(--text-light);
+      border-color: var(--border);
+    }
+
+    /* ============================================
+       STEPS
+    ============================================ */
+    .steps-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0;
+      align-items: start;
+    }
+
+    .step-num-col {
+      padding-top: 0.05rem;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .step-number {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--teal);
+      opacity: 0.15;
+      letter-spacing: -0.04em;
+      user-select: none;
+    }
+
+    .step-body {
+      padding-top: 0.55rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .steps-list li:last-child .step-body {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .step-tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.45rem;
+    }
+
+    .step-body h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.65rem;
+      color: var(--text);
+    }
+
+    .step-body p {
+      font-size: 0.97rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.75;
+    }
+
+    .step-body ul {
+      padding-left: 1.1rem;
+      margin-top: 0.4rem;
+    }
+
+    .step-body li {
+      font-size: 0.97rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      line-height: 1.7;
+    }
+
+    .step-body em {
+      font-style: italic;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 520px) {
+      .step {
+        grid-template-columns: 1fr;
+      }
+      .step-num-col {
+        justify-content: flex-start;
+        padding-right: 0;
+        padding-bottom: 0.25rem;
+      }
+      .step-number {
+        font-size: 3rem;
+        opacity: 0.18;
+      }
+    }
+
+    /* ============================================
+       PROMPTING TIPS — editorial list
+    ============================================ */
+    .tips-list {
+      list-style: none;
+      margin-top: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tip-item {
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .tip-item:first-child { border-top: 1px solid var(--border-light); }
+
+    .tip-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+      line-height: 1;
+    }
+
+    .tip-item p {
+      font-size: 0.97rem;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       WHEN IT BREAKS — editorial list
+    ============================================ */
+    .break-list {
+      list-style: none;
+      margin-top: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .break-item {
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .break-item:first-child { border-top: 1px solid var(--border); }
+
+    .break-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+      line-height: 1;
+    }
+
+    .break-item p {
+      font-size: 0.97rem;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       EXAMPLES IN PRACTICE
+    ============================================ */
+    .examples-list {
+      list-style: none;
+      margin-top: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .example-item {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .example-num {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--teal);
+      opacity: 0.18;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+      letter-spacing: -0.03em;
+      user-select: none;
+    }
+
+    .example-body h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .example-body h3 a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .example-body h3 a:hover { color: #124e4e; }
+
+    .example-body p {
+      font-size: 0.95rem;
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    /* ============================================
+       RESOURCES
+    ============================================ */
+    .resources-list {
+      list-style: none;
+      margin-top: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .resource-item {
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-light);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+    .resource-item:first-child { border-top: 1px solid var(--border-light); }
+    .resource-item:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+      border-radius: 3px;
+    }
+
+    .resource-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+      line-height: 1;
+    }
+
+    .resource-text h3 {
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+      color: var(--teal);
+    }
+
+    .resource-text p {
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       CLOSING BAND
+    ============================================ */
+    .closing-band {
+      background: var(--teal);
+      padding: 4rem 1.5rem;
+    }
+
+    .closing-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .closing-band .section-label {
+      color: rgba(255,255,255,0.6);
+    }
+
+    .closing-band h2 {
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .closing-band h2 em {
+      color: rgba(255,255,255,0.75);
+    }
+
+    .closing-band p {
+      color: rgba(255,255,255,0.82);
+      font-size: 1.05rem;
+      max-width: 560px;
+    }
+
+    .closing-band p strong {
+      color: #fff;
+    }
+
+    /* ============================================
+       FOOTER
+    ============================================ */
+    .site-footer {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+    }
+
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .footer-name {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .footer-meta {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    .footer-meta a {
+      color: var(--teal);
+    }
+
+    .footer-license {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      width: 100%;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* ============================================
+       BEGINNER FLAG (visible in dev, hidden on page)
+       Used as inline notes — hidden visually but
+       present in source for Nicole's review
+    ============================================ */
+    .beginner-flag {
+      display: none;
+    }
+
+    /* ============================================
+       PRINT
+    ============================================ */
+    @media print {
+      .site-nav,
+      .skip-link {
+        display: none !important;
+      }
+
+      body {
+        background: #fff;
+        font-size: 10.5pt;
+        color: #111;
+      }
+
+      .hero-band,
+      .section-band,
+      .closing-band,
+      .site-footer {
+        padding: 1.5rem 0;
+        background: #fff !important;
+      }
+
+      .section-band--alt {
+        background: #f5f5f5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .closing-band {
+        background: var(--teal) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      h2 { font-size: 15pt; page-break-after: avoid; }
+      h3 { font-size: 11pt; page-break-after: avoid; }
+
+      .step { page-break-inside: avoid; }
+      .tip-item,
+      .break-item,
+      .example-item { page-break-inside: avoid; }
+
+      .toolkit-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        break-inside: avoid;
+      }
+
+      .step-number {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .callout {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      a { color: var(--teal); }
+
+      .section-inner,
+      .hero-inner,
+      .closing-inner,
+      .footer-inner {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- ============================================
+       NAV
+  ============================================ -->
+  <nav class="site-nav" aria-label="Site navigation">
+    <a href="#" class="nav-brand" aria-label="Nicole's Guide to Vibe Coding — return to top">
+      Nicole's Vibe Coding Guide
+    </a>
+
+    <div class="nav-right">
+      <button
+        class="nav-menu-toggle"
+        aria-expanded="false"
+        aria-controls="nav-links-list"
+        aria-label="Toggle navigation menu"
+        id="nav-toggle"
+      >
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true" focusable="false">
+          <rect y="4"  width="22" height="2.2" rx="1.1" fill="currentColor"/>
+          <rect y="10" width="22" height="2.2" rx="1.1" fill="currentColor"/>
+          <rect y="16" width="22" height="2.2" rx="1.1" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <ul class="nav-links" id="nav-links-list" role="list">
+        <li><a href="#what-is">What is it?</a></li>
+        <li><a href="#toolkit">Toolkit</a></li>
+        <li><a href="#process">The Process</a></li>
+        <li><a href="#prompting">Prompting</a></li>
+        <li><a href="#when-it-breaks">Troubleshooting</a></li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#resources">Resources</a></li>
+        <li>
+          <button class="nav-pdf-btn" onclick="window.print()" aria-label="Save this page as a PDF">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+              <path d="M7 1v7M4 6l3 3 3-3M2 10v1.5A1.5 1.5 0 003.5 13h7A1.5 1.5 0 0012 11.5V10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Save as PDF
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       MAIN
+  ============================================ -->
+  <main id="main-content" tabindex="-1">
+
+    <!-- HERO -->
+    <header class="hero-band" role="banner">
+      <div class="hero-inner">
+        <p class="hero-eyebrow" aria-label="Guide type">A Practitioner's Guide</p>
+        <h1>Nicole's Guide to<br/><em>Vibe Coding</em></h1>
+        <div class="hero-intro" role="note">
+          <p>
+            This is a personal guide to the process and tools I use when building things with
+            generative AI. No coding background required!<br>
+            <strong>I'll keep updating it as I learn.</strong><br>
+            My hope is that it lowers the barrier for anyone curious about getting started.
+          </p>
+        </div>
+        <div class="hero-meta" aria-label="About this guide">
+          <span>Nicole Baker</span>
+          <span class="hero-meta-sep" aria-hidden="true">·</span>
+          <span>Librarian</span>
+          <span class="hero-meta-sep" aria-hidden="true">·</span>
+          <span>Living document — last updated 06.02.2026</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================
+         1. WHAT IS VIBE CODING — bg: default
+    ============================================ -->
+    <section class="section-band" id="what-is" aria-labelledby="what-is-heading">
+      <div class="section-inner">
+        <p class="section-label" aria-hidden="true">The basics</p>
+        <h2 id="what-is-heading">What is <em>vibe coding?</em></h2>
+
+        <div class="bordered-intro">
+          <p>
+            Vibe coding means using generative AI tools to write code for you — especially when
+            you don't have a coding background. You describe what you want to build, the AI
+            generates the code, and you iterate from there until you have something close to
+            what you envisioned.
+          </p>
+        </div>
+
+        <p>
+          You don't need to master a programming language. But you will need to develop your
+          skills in <strong>prompting AI tools</strong>, <strong>evaluating their output</strong>,
+          and working through an iterative process.
+          <!-- BEGINNER FLAG: "iterative process" may need a one-sentence plain-language gloss here — e.g., "meaning you go back and forth, refining as you go." -->
+        </p>
+
+        <p>
+          Vibe coding isn't meant to replace learning how to code. But it does lower the barrier
+          to creating web-based content and tools for people without that background. With minimal
+          experience in HTML and CSS, I've built websites, interactive tools, and open educational
+          resources this way.
+          <!-- BEGINNER FLAG: "HTML and CSS" — a brief parenthetical like "(the languages that control how web pages look)" would help readers who don't know what these are. -->
+        </p>
+
+        <div class="callout" role="note" aria-label="A note on staying in the driver's seat">
+          <p>
+            The most important thing: <strong>stay in the driver's seat.</strong> Evaluate what
+            the AI produces. Question things that don't seem right. Build in accessibility and
+            strong design from the beginning — not as an afterthought. AI can make things faster;
+            that doesn't automatically make them better.
+          </p>
+        </div>
+
+        <p>
+          This guide is intended to model that kind of thoughtful, intentional AI use. Everything
+          here reflects how I actually work — including the parts that are still evolving.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         2. TOOLKIT — bg: alt (darker cream)
+    ============================================ -->
+    <section class="section-band section-band--alt" id="toolkit" aria-labelledby="toolkit-heading">
+      <div class="section-inner">
+        <p class="section-label" aria-hidden="true">What you'll need</p>
+        <h2 id="toolkit-heading">My Toolkit</h2>
+
+        <div class="bordered-intro">
+          <p>
+            You don't need all of these to get started. A generative AI tool and a GitHub account
+            are enough to build and publish something. Everything else builds from there.
+          </p>
+        </div>
+
+        <div class="toolkit-grid" role="list">
+
+          <article class="toolkit-card" role="listitem">
+            <span class="toolkit-card-icon" aria-hidden="true">📝</span>
+            <span class="toolkit-badge">Start here</span>
+            <h3>A Word Processor</h3>
+            <p>
+              Use whatever you have — Word, Google Docs, anything. Before you open an AI tool,
+              draft your prompt and your content here first. This step makes a real difference
+              in quality.
+            </p>
+          </article>
+
+          <article class="toolkit-card" role="listitem">
+            <span class="toolkit-card-icon" aria-hidden="true">🤖</span>
+            <span class="toolkit-badge">Start here</span>
+            <h3>Claude (Generative AI)</h3>
+            <p>
+              My preferred AI tool for this work right now. The free version handles most
+              projects well. Other tools can generate code, but Claude has been the most
+              reliable and accurate in my experience.
+            </p>
+          </article>
+
+          <article class="toolkit-card" role="listitem">
+            <span class="toolkit-card-icon" aria-hidden="true">🐙</span>
+            <span class="toolkit-badge">Start here</span>
+            <h3>GitHub</h3>
+            <p>
+              Where your code lives and where it gets published to the web — for free — using
+              GitHub Pages. No server required. This is where your work becomes a real,
+              shareable URL.
+              <!-- BEGINNER FLAG: "repository" is used later without definition. Consider adding: "GitHub organizes projects into repositories — think of each one as a folder for a single project." Either here or before Step 7. -->
+            </p>
+          </article>
+
+          <article class="toolkit-card" role="listitem">
+            <span class="toolkit-card-icon" aria-hidden="true">💻</span>
+            <span class="toolkit-badge optional">Worth learning</span>
+            <h3>Visual Studio Code</h3>
+            <p>
+              A free code editor that lets you work locally, preview your site before publishing,
+              and push to GitHub when you're ready. Not required to start, but worth picking up
+              if you plan to build more than once. Plenty of good guides exist online.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         3. THE PROCESS — bg: default
+    ============================================ -->
+    <section class="section-band" id="process" aria-labelledby="process-heading">
+      <div class="section-inner">
+        <p class="section-label" aria-hidden="true">Step by step</p>
+        <h2 id="process-heading">How I Do It</h2>
+
+        <div class="bordered-intro">
+          <p>
+            This is my current workflow. It has changed a lot — I used to just open a generative
+            AI tool and start typing. Being more intentional upfront has made a real difference
+            in quality and in how many back-and-forth rounds I need.
+          </p>
+        </div>
+
+        <ol class="steps-list" aria-label="Step-by-step vibe coding process">
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">1</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">Before you open any AI tool</span>
+              <h3>Draft your prompt and your content separately</h3>
+              <p>
+                Open a document and write two things: a description of what you want to build,
+                and the actual content you want in it. I keep these separate intentionally.
+                Sometimes I don't want to hand my content to an AI tool. Sometimes the content
+                doesn't exist yet.
+              </p>
+              <p>
+                If privacy isn't a concern and you're ready to put everything together, you can
+                combine them. <strong>Some AI tools use your inputs to train their models —
+                check the terms of the tool you're using if that matters for your context.</strong>
+              </p>
+              <p>
+                If you just want to see how something looks and don't have content yet, skip the
+                content draft and just write your prompt.
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">2</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">Optional but useful</span>
+              <h3>Sketch it out — literally</h3>
+              <p>
+                If you have a visual in mind, grab a piece of paper and draw it. Where should the
+                navigation go? What sections do you want? A rough sketch helps you find language
+                to add to your prompt. And if your sketch isn't the most practical layout, the AI
+                can offer design input you might not have considered.
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">3</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">The most important step</span>
+              <h3>Write a thoughtful prompt</h3>
+              <p>
+                A good prompt describes: what you're building, who it's for, what content to
+                include, any design ideas you have, and an explicit ask for input you want the
+                AI to provide. Most importantly: <strong>include accessibility, UDL principles,
+                and design considerations from the start.</strong> It's much easier to build
+                these in than to retrofit them afterward.
+                <!-- BEGINNER FLAG: "UDL" (Universal Design for Learning) is used here without explanation. A brief gloss — "UDL, or Universal Design for Learning, is a framework for designing content that works for people with a wide range of needs and learning styles" — would help a non-educator reader. -->
+              </p>
+              <p>
+                You don't have to know exactly how things should look. Ask the AI what layout,
+                color scheme, or interaction patterns would work best for your goal.
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">4</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">Getting the code</span>
+              <h3>Paste your prompt and review what comes back</h3>
+              <p>
+                Paste your prompt into Claude (or your tool of choice). It will generate code —
+                typically HTML, CSS, and JavaScript in a single file.
+                <!-- BEGINNER FLAG: "HTML, CSS, and JavaScript" — a one-liner here would help: "HTML structures the page, CSS controls how it looks, and JavaScript adds interactivity." This is the first time all three appear together and many readers won't know the distinction. -->
+                Depending on the tool, you may see a live preview right in the chat.
+              </p>
+              <p>
+                <strong>Read through what it produced before moving on.</strong> Does it match
+                what you asked for? Is anything obviously missing or off?
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">5</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">See it for real</span>
+              <h3>Preview the code</h3>
+              <p>
+                Built-in previews in the AI chat are a good start. For a fuller view, you have
+                two options: paste the code into Visual Studio Code and use its live preview, or
+                paste it directly into GitHub to view it there. Seeing the code rendered in
+                context helps you catch layout issues, accessibility problems, and places where
+                the design doesn't match your vision.
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">6</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">Where most of the work happens</span>
+              <h3>Iterate</h3>
+              <p>
+                You will have ideas for changes. You will notice things that are wrong. This is
+                completely normal — it's the process, not a failure. Go back to your AI tool,
+                describe what you want to change or fix, and paste in your current code.
+                Something like: <em>"Here's what I have. Here's what I want to change."</em>
+                Repeat as many times as needed.
+              </p>
+              <p>
+                <strong>Evaluate as you go.</strong> Check color contrast and keyboard
+                navigation. Check that the design is doing what you intended. Check that content
+                is accurate. Don't wait until the end to assess for accessibility.
+                <!-- BEGINNER FLAG: "color contrast" and "keyboard navigation" are accessibility concepts that may be unfamiliar. A brief note — "color contrast means text is readable against its background; keyboard navigation means the page can be used without a mouse" — would help here. -->
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">7</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">Publishing</span>
+              <h3>Get it into GitHub</h3>
+              <p>
+                Create a new repository on GitHub and upload your file(s). If you're new to
+                GitHub, include that in your AI prompt — ask for step-by-step instructions for
+                creating a repository and uploading your code. The AI can walk you through it,
+                and there are also plenty of guides online.
+              </p>
+              <p>
+                <strong>A note on editing:</strong> you can edit directly in GitHub's browser
+                interface to start, which is simpler. VS Code lets you work offline, preview
+                locally, and only publish when you're ready. I use Claude to walk me through
+                pushing from VS Code to GitHub when I need it — I recommend doing the same to
+                learn this process.
+                <!-- BEGINNER FLAG: "pushing" is developer jargon for sending your local code up to GitHub. Worth a quick gloss: "pushing means sending your local code up to GitHub so it's live." -->
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">8</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">Go live</span>
+              <h3>Enable GitHub Pages</h3>
+              <p>
+                In your repository, go to <strong>Settings → Pages</strong>. Set the source
+                branch (usually <em>main</em>). Save. GitHub will publish your site at a URL
+                like <code>yourusername.github.io/repo-name</code>. It takes a few minutes —
+                wait, then refresh.
+                <!-- BEGINNER FLAG: "source branch" and "main" are git concepts that may confuse a beginner. Consider adding: "A branch is just a version of your project — 'main' is the default one GitHub creates for you." -->
+              </p>
+              <p>
+                If you have a custom domain, you can point it to GitHub Pages in the same
+                settings screen. (I use Porkbun for mine.)
+                <!-- BEGINNER FLAG: "custom domain" may need a one-liner: "a custom domain is a web address you own, like yourname.com, instead of the default github.io address." -->
+              </p>
+            </div>
+          </li>
+
+          <li class="step">
+            <div class="step-num-col">
+              <span class="step-number" aria-hidden="true">9</span>
+            </div>
+            <div class="step-body">
+              <span class="step-tag">The whole point</span>
+              <h3>Share it</h3>
+              <p>
+                Post the link. Add it to your website. Share it with colleagues. Tag your tools
+                as open access and share them with people who would benefit from using or
+                remixing them. That's what this is for.
+              </p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================
+         4. PROMPTING — bg: alt
+    ============================================ -->
+    <section class="section-band section-band--alt" id="prompting" aria-labelledby="prompting-heading">
+      <div class="section-inner">
+        <p class="section-label" aria-hidden="true">The hard part</p>
+        <h2 id="prompting-heading">Writing a <em>Good Prompt</em></h2>
+
+        <div class="bordered-intro">
+          <p>
+            This gets better with practice. The best analogy I know: a teacher asks elementary
+            students to write instructions for making a peanut butter sandwich. They write
+            something like "put the peanut butter on the bread," and when the teacher follows
+            those instructions exactly, it goes sideways. <strong>The more explicit and specific
+            you can be, the closer the output will be to what you actually imagined.</strong>
+          </p>
+        </div>
+
+        <ul class="tips-list" role="list">
+
+          <li class="tip-item" role="listitem">
+            <span class="tip-icon" aria-hidden="true">🎯</span>
+            <p>
+              <strong>Be specific about what you're building.</strong> Not just "a website" but
+              "a single-page interactive tool for undergraduate students to evaluate sources using
+              the SIFT method, with a form input and structured results output."
+            </p>
+          </li>
+
+          <li class="tip-item" role="listitem">
+            <span class="tip-icon" aria-hidden="true">👥</span>
+            <p>
+              <strong>Describe your audience.</strong> Who will use this? What is their experience
+              level? What should they be able to do when they're done?
+            </p>
+          </li>
+
+          <li class="tip-item" role="listitem">
+            <span class="tip-icon" aria-hidden="true">♿</span>
+            <p>
+              <strong>Include accessibility from the start.</strong> Mention UDL principles, WCAG
+              guidelines, color contrast, keyboard navigability, and screen reader compatibility.
+              Don't wait until the end.
+            </p>
+          </li>
+
+          <li class="tip-item" role="listitem">
+            <span class="tip-icon" aria-hidden="true">🎨</span>
+            <p>
+              <strong>Ask for design input.</strong> Describe what you're going for and ask what
+              layout, color scheme, or interaction pattern would work best for your specific goal.
+            </p>
+          </li>
+
+          <li class="tip-item" role="listitem">
+            <span class="tip-icon" aria-hidden="true">🔁</span>
+            <p>
+              <strong>Expect to iterate.</strong> The first output will rarely be perfect — and
+              that's okay. That's the process, not a failure.
+            </p>
+          </li>
+
+          <li class="tip-item" role="listitem">
+            <span class="tip-icon" aria-hidden="true">📋</span>
+            <p>
+              <strong>Build from what you have.</strong> Once you have code, paste it back in
+              with your next ask: <em>"Here's my current code. Here's what I want to change."</em>
+            </p>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================
+         5. WHEN IT BREAKS — bg: default
+    ============================================ -->
+    <section class="section-band" id="when-it-breaks" aria-labelledby="breaks-heading">
+      <div class="section-inner">
+        <p class="section-label" aria-hidden="true">When things go wrong</p>
+        <h2 id="breaks-heading">When It Breaks</h2>
+
+        <div class="bordered-intro">
+          <p>
+            Things will go wrong. Here's what I actually do, depending on what it is and what
+            time of day it is.
+          </p>
+        </div>
+
+        <ul class="break-list" role="list">
+
+          <li class="break-item" role="listitem">
+            <span class="break-icon" aria-hidden="true">🤖</span>
+            <p>
+              <strong>Go back to the AI tool.</strong> Describe what's happening versus what you
+              want to be happening. Paste in the broken code. Most of the time, this resolves it.
+            </p>
+          </li>
+
+          <li class="break-item" role="listitem">
+            <span class="break-icon" aria-hidden="true">🔍</span>
+            <p>
+              <strong>Google the error message exactly.</strong> Copy it and search. Stack Overflow
+              has answered more questions for me than I can count.
+            </p>
+          </li>
+
+          <li class="break-item" role="listitem">
+            <span class="break-icon" aria-hidden="true">📖</span>
+            <p>
+              <strong>Check W3Schools</strong> for HTML, CSS, and JavaScript reference when you
+              need to understand what a piece of code is actually doing.
+            </p>
+          </li>
+
+          <li class="break-item" role="listitem">
+            <span class="break-icon" aria-hidden="true">🤝</span>
+            <p>
+              <strong>Ask someone who codes.</strong> This is where I've learned the most. There
+              is no substitute for human community. Find the people who are doing this and build
+              relationships with them. Follow people who share their process openly. Show up with
+              curiosity.
+            </p>
+          </li>
+
+          <li class="break-item" role="listitem">
+            <span class="break-icon" aria-hidden="true">🚶</span>
+            <p>
+              <strong>Walk away.</strong> If it's late and it's not working, close the laptop.
+              Things that seem impossible at 1am are often obvious the next morning.
+            </p>
+          </li>
+
+          <li class="break-item" role="listitem">
+            <span class="break-icon" aria-hidden="true">✨</span>
+            <p>
+              <strong>Look at what inspires you.</strong> Browse LinkedIn, look at the tools
+              people you admire are building, and remind yourself what's possible. Sometimes
+              that's all you need to catch a second wind.
+            </p>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================
+         6. EXAMPLES IN PRACTICE — bg: alt
+    ============================================ -->
+    <section class="section-band section-band--alt" id="examples" aria-labelledby="examples-heading">
+      <div class="section-inner">
+        <p class="section-label" aria-hidden="true">Seeing it in action</p>
+        <h2 id="examples-heading">Examples <em>in Practice</em></h2>
+
+        <div class="bordered-intro">
+          <p>
+            Here are two things built with this exact process — one a collaborative tool, one
+            the page you're reading right now.
+          </p>
+        </div>
+
+        <ul class="examples-list" role="list">
+
+          <li class="example-item" role="listitem">
+            <span class="example-num" aria-hidden="true">1</span>
+            <div class="example-body">
+              <h3>
+                <a
+                  href="https://bakerxn.github.io/blooms-stAIrcase/index.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Bloom's StAIrcase — opens in new tab"
+                >Bloom's StAIrcase</a>
+              </h3>
+              <p>
+                An interactive tool for faculty designing AI-integrated course activities using
+                Bloom's Taxonomy, co-created with Brigette Meskell.
+              </p>
+            </div>
+          </li>
+
+          <li class="example-item" role="listitem">
+            <span class="example-num" aria-hidden="true">2</span>
+            <div class="example-body">
+              <h3>This guide</h3>
+              <p>
+                This page was vibe coded. Built with Claude, hosted on GitHub Pages, and
+                printable to PDF via your browser.
+              </p>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================
+         7. RESOURCES — bg: default
+    ============================================ -->
+    <section class="section-band" id="resources" aria-labelledby="resources-heading">
+      <div class="section-inner">
+        <p class="section-label" aria-hidden="true">Keep going</p>
+        <h2 id="resources-heading">Where to Go Next</h2>
+
+        <div class="bordered-intro">
+          <p>
+            The best way to get better at this is to build something. It doesn't have to be
+            useful. It doesn't have to be perfect. The goal is to get comfortable with the
+            process and build your confidence in the loop.
+          </p>
+        </div>
+
+        <ul class="resources-list" role="list">
+
+          <li>
+            <a
+              href="https://github.com"
+              class="resource-item"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub — opens in new tab"
+              role="listitem"
+            >
+              <span class="resource-icon" aria-hidden="true">🐙</span>
+              <div class="resource-text">
+                <h3>GitHub</h3>
+                <p>Set up your free account, explore repositories, and see what other people are putting out in the open.</p>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="https://www.w3schools.com"
+              class="resource-item"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="W3Schools — opens in new tab"
+              role="listitem"
+            >
+              <span class="resource-icon" aria-hidden="true">📖</span>
+              <div class="resource-text">
+                <h3>W3Schools</h3>
+                <p>Beginner-friendly reference for HTML, CSS, and JavaScript when you want to understand what you're looking at.</p>
+              </div>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="https://claude.ai"
+              class="resource-item"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Claude AI — opens in new tab"
+              role="listitem"
+            >
+              <span class="resource-icon" aria-hidden="true">🤖</span>
+              <div class="resource-text">
+                <h3>Claude</h3>
+                <p>When in doubt, paste in code you don't understand and ask it to explain what each part does.</p>
+              </div>
+            </a>
+          </li>
+
+          <li role="listitem">
+            <div class="resource-item" style="cursor:default;">
+              <span class="resource-icon" aria-hidden="true">🤝</span>
+              <div class="resource-text">
+                <h3>The People Around You</h3>
+                <p>Find colleagues, LinkedIn connections, or community members who are building things and ask them questions.</p>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================
+         CLOSING — teal band
+    ============================================ -->
+    <section class="closing-band" aria-labelledby="closing-heading">
+      <div class="closing-inner">
+        <p class="section-label" aria-hidden="true">A living document</p>
+        <h2 id="closing-heading">This Is Just <em>the Beginning</em></h2>
+        <p>
+          I'll update this guide as my process evolves. The tools change, my workflow changes,
+          and I keep learning — that's kind of the point.
+        </p>
+        <p style="margin-top: 0.85rem;">
+          <strong>If you have questions or want to share something you built, find me online.</strong>
+          I genuinely want to see what you make.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-name">Nicole Baker</p>
+        <p class="footer-meta">
+          Librarian  · 
+          <a href="https://nicolebaker.dev" target="_blank" rel="noopener noreferrer">nicolebaker.dev</a>
+        </p>
+      </div>
+      <p class="footer-license">
+        This guide is openly licensed. Use it, remix it, share it.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       JS
+  ============================================ -->
+  <script>
+    const toggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links-list');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.site-nav')) {
+        navLinks.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && navLinks.classList.contains('is-open')) {
+        navLinks.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
+      }
+    });
+  </script>
+
+</body>
+</html>
